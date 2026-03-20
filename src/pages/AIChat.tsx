@@ -95,7 +95,7 @@ const AIChat: React.FC = () => {
       ];
 
       // Use Vite proxy: /api/hf → router.huggingface.co
-      const response = await fetch('/api/hf/hf-inference/v1/chat/completions', {
+      const response = await fetch('/api/hf/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
