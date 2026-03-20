@@ -1,17 +1,23 @@
-module.exports = async function handler(req, res) {
-  // Only allow POST
+export default async function handler(req, res) {
+  console.log('API Request received:', req.method);
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const HF_TOKEN = process.env.HF_TOKEN;
   if (!HF_TOKEN) {
-    return res.status(500).json({ error: 'HF_TOKEN not configured on server' });
+    console.error('Environment variable HF_TOKEN is missing');
+    return res.status(500).json({ error: 'HF_TOKEN not configured in Vercel environment variables' });
   }
 
   try {
     const { messages } = req.body;
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ error: 'Invalid messages format' });
+    }
 
+    console.log('Calling Hugging Face API...');
     const response = await fetch(
       'https://router.huggingface.co/hf-inference/v1/chat/completions',
       {
@@ -33,14 +39,23 @@ module.exports = async function handler(req, res) {
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('HF API error:', response.status, errText);
-      return res.status(response.status).json({ error: errText });
+      console.error('HF API error response:', response.status, errText);
+      return res.status(response.status).json({ 
+        error: `Hugging Face API error: ${response.status}`,
+        details: errText 
+      });
     }
 
     const data = await response.json();
+    console.log('HF API call successful');
     return res.status(200).json(data);
   } catch (error) {
-    console.error('Server error:', error);
-    return res.status(500).json({ error: error.message });
+    console.error('Serverless function error:', error);
+    return res.status(500).json({ 
+      error: 'Internal Server Error', 
+      message: error.message
+    });
   }
-};
+}
+
+
