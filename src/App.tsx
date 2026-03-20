@@ -8,6 +8,7 @@ import MyLearning from './pages/MyLearning';
 import EnrolledCourses from './pages/EnrolledCourses';
 
 import AuthModal from './components/AuthModal';
+import AIChat from './pages/AIChat';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/my-learning" element={<MyLearning />} />
               <Route path="/enrolled-courses" element={<EnrolledCourses />} />
+              <Route path="/chat" element={<AIChat />} />
             </Routes>
           </main>
           

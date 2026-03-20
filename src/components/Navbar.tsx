@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ShoppingCart, LogOut } from 'lucide-react';
+import { Search, ShoppingCart, LogOut, Bot } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 
@@ -38,6 +38,16 @@ const Navbar: React.FC = () => {
         </form>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <Link to="/chat" className="glass-button" style={{ 
+            fontSize: '1rem', 
+            padding: '12px 24px',
+            background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+            boxShadow: '0 4px 15px rgba(99, 102, 241, 0.3)',
+            border: 'none'
+          }}>
+            <Bot size={20} /> Chat with AI
+          </Link>
+
           <Link to="/cart" style={{ position: 'relative', color: 'white', display: 'flex', alignItems: 'center' }}>
             <ShoppingCart size={24} />
             {cart.length > 0 && (
