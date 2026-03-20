@@ -94,15 +94,15 @@ const AIChat: React.FC = () => {
         { role: 'user', content: currentInput }
       ];
 
-      // Call HF Inference API directly (works on Vercel + local)
-      const response = await fetch('https://router.huggingface.co/v1/chat/completions', {
+      // Call HF free serverless Inference API directly
+      const response = await fetch('https://router.huggingface.co/hf-inference/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          model: 'Qwen/Qwen2.5-7B-Instruct-1M',
+          model: 'Qwen/Qwen2.5-7B-Instruct',
           messages,
           max_tokens: 512,
           temperature: 0.7,
