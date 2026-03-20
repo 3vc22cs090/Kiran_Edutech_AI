@@ -88,7 +88,7 @@ const AIChat: React.FC = () => {
       const messages = [
         {
           role: 'system',
-          content: 'You are a helpful AI tutor for KIRAN EDUTECH. Help students learn clearly and concisely.'
+          content: 'You are a friendly Chatbot of KIRAN EDUTECH. Help students learn clearly and concisely.'
         },
         ...history.map(m => ({ role: m.role, content: m.content })),
         { role: 'user', content: currentInput }
@@ -102,10 +102,11 @@ const AIChat: React.FC = () => {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          model: 'mistralai/Mistral-7B-Instruct-v0.2',
+          model: 'openai/gpt-oss-20b',
           messages,
           max_tokens: 512,
           temperature: 0.7,
+          top_p: 0.95,
           stream: false
         })
       });
