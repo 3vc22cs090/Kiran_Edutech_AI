@@ -94,15 +94,15 @@ const AIChat: React.FC = () => {
         { role: 'user', content: currentInput }
       ];
 
-      // Use Vite proxy: /api/hf → router.huggingface.co
-      const response = await fetch('/api/hf/v1/chat/completions', {
+      // Call HF Inference API directly (works on Vercel + local)
+      const response = await fetch('https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          model: 'openai/gpt-oss-20b',
+          model: 'mistralai/Mistral-7B-Instruct-v0.3',
           messages,
           max_tokens: 512,
           temperature: 0.7,
