@@ -95,7 +95,7 @@ const AIChat: React.FC = () => {
       ];
 
       // Call HF Inference API directly (works on Vercel + local)
-      const response = await fetch('https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions', {
+      const response = await fetch('https://router.huggingface.co/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
