@@ -102,7 +102,7 @@ const AIChat: React.FC = () => {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          model: 'mistralai/Mistral-7B-Instruct-v0.3',
+          model: 'Qwen/Qwen2.5-7B-Instruct-1M',
           messages,
           max_tokens: 512,
           temperature: 0.7,
