@@ -77,11 +77,7 @@ const AIChat: React.FC = () => {
     setInput('');
     setIsTyping(true);
 
-    // Call HF via Vite proxy → router.huggingface.co (OpenAI-compatible endpoint)
     try {
-      const token = import.meta.env.VITE_HF_TOKEN;
-      if (!token) throw new Error("No HF token configured in .env");
-
       // Build chat messages from history
       const currentSession = sessions.find(s => s.id === activeSessionId);
       const history = (currentSession?.messages || []).slice(-10);
@@ -94,26 +90,16 @@ const AIChat: React.FC = () => {
         { role: 'user', content: currentInput }
       ];
 
-      // Call HF free serverless Inference API directly
-      const response = await fetch('https://router.huggingface.co/hf-inference/v1/chat/completions', {
+      // Call our Vercel serverless API (token stays server-side)
+      const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          model: 'Qwen/Qwen2.5-7B-Instruct',
-          messages,
-          max_tokens: 512,
-          temperature: 0.7,
-          top_p: 0.95,
-          stream: false
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages })
       });
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`API error ${response.status}: ${errText}`);
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || `API error ${response.status}`);
       }
 
       const result = await response.json();
